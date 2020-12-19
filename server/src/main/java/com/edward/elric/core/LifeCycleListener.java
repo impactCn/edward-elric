@@ -14,6 +14,8 @@ public interface LifeCycleListener {
 
     void beforeStart(BaseLifeCycle server) throws Exception;
 
+    void afterStart(BaseLifeCycle server) throws Exception;
+
     void beforeStop(BaseLifeCycle server) throws Exception;
 
     void afterStop(BaseLifeCycle server) throws Exception;

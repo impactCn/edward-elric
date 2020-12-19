@@ -24,6 +24,11 @@ public class BaseLifeCycleAdapter implements LifeCycleListener {
     }
 
     @Override
+    public void afterStart(BaseLifeCycle server) throws Exception {
+
+    }
+
+    @Override
     public void beforeStop(BaseLifeCycle server) throws Exception {
 
     }

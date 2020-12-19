@@ -5,8 +5,29 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.edward-elric</groupId>
-    <artifactId>edward-elric-parent</artifactId><packaging>pom</packaging>
-    <version>0.0.1-SNAPSHOT</version><modules><module>edward-elric-server</module></modules>
+    <artifactId>edward-elric-parent</artifactId>
+    <packaging>pom</packaging>
+    <version>0.0.1-SNAPSHOT</version>
 
-    
+    <properties>
+        <servlet.version>4.0.1</servlet.version>
+    </properties>
+
+    <modules>
+        <module>edward-elric-server</module>
+    </modules>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>javax.servlet</groupId>
+                <artifactId>javax.servlet-api</artifactId>
+                <version>${servlet.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+
+
+
 </project>

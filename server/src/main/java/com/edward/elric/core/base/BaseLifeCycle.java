@@ -19,7 +19,6 @@ public abstract class BaseLifeCycle {
         return null;
     }
 
-
     /**
      * 监听器
      */
