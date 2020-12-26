@@ -9,5 +9,8 @@
         <module name="server" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="edward-elric-server" target="11" />
+    </bytecodeTargetLevel>
   </component>
 </project>

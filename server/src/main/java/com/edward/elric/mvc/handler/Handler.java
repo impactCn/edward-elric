@@ -21,11 +21,28 @@ public class Handler {
     private Pattern pattern;
     private Map<String, Integer> paramIndexMapping;
 
+    public Object getController() {
+        return controller;
+    }
+
+    public Method getMethod() {
+        return method;
+    }
+
+    public Pattern getPattern() {
+        return pattern;
+    }
+
+    public Map<String, Integer> getParamIndexMapping() {
+        return paramIndexMapping;
+    }
+
     public Handler(Object controller, Method method, Pattern pattern) {
         this.controller = controller;
         this.method = method;
         this.pattern = pattern;
         this.paramIndexMapping =  new HashMap<>();
+        putParamIndexMapping(method);
     }
 
     private void putParamIndexMapping(Method method) {

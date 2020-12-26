@@ -246,7 +246,7 @@ public class DispatcherServlet extends HttpServlet {
     private void doScanner(String scanPackage) {
         URL url = this.getClass()
                 .getClassLoader()
-                .getResource("/" + scanPackage.replaceAll("\\.", "/"));
+                .getResource(scanPackage.replaceAll("\\.", "/"));
 
         File classDir = new File(url.getFile());
 
