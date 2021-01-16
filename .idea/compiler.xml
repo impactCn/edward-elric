@@ -7,10 +7,8 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="server" />
+        <module name="edward-elric-server" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="edward-elric-server" target="11" />
-    </bytecodeTargetLevel>
   </component>
 </project>

@@ -1,11 +1,14 @@
 package com.edward.elric.mvc;
 
 import com.edward.elric.core.annotion.Autowired;
+import com.edward.elric.core.context.ApplicationContext;
 import com.edward.elric.mvc.annotation.Controller;
 import com.edward.elric.mvc.annotation.RequestMapping;
 import com.edward.elric.mvc.annotation.RequestParam;
 import com.edward.elric.mvc.annotation.Service;
 import com.edward.elric.mvc.handler.Handler;
+import com.edward.elric.mvc.handler.HandlerAdapter;
+import com.edward.elric.mvc.handler.HandlerMapping;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -30,13 +33,18 @@ import java.util.regex.Pattern;
  */
 public class DispatcherServlet extends HttpServlet {
 
-    private Properties env = new Properties();
+    private final String LOCATION = "contextConfigLocation";
 
-    private Map<String, Object> beanFactory = new ConcurrentHashMap<>();
+    private List<HandlerMapping> handlerMappings = new ArrayList<>();
 
-    private List<Handler> handlerMapping = new ArrayList<>();
+    private Map<HandlerMapping, HandlerAdapter> handlerAdapters = new HashMap<>();
 
-    private List<String> classNames = new ArrayList<>();
+    private List<ViewResolve> viewResolves = new ArrayList<>();
+
+    private ApplicationContext context;
+
+
+
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
@@ -56,42 +64,20 @@ public class DispatcherServlet extends HttpServlet {
 
     private void doDispatch(HttpServletRequest req, HttpServletResponse resp) throws Exception {
 
-        Handler handler = getHandler(req);
+        HandlerMapping handler = getHandler(req);
 
         if (handler == null) {
-            resp.getWriter().write("404 Not Found");
+            processDispatchResult(req, resp, new ModelAndView("404"));
             return;
         }
 
-        Class<?>[] parameterTypes = handler.getMethod().getParameterTypes();
+        HandlerAdapter handlerAdapter = getHandlerAdapter(handler);
 
-        Object[] paramValues = new Object[parameterTypes.length];
+        ModelAndView mv = handlerAdapter.handle(req, handler);
 
-        Map<String, String[]> parameterMap = req.getParameterMap();
+        processDispatchResult(req, resp, mv);
 
-        for (Map.Entry<String, String[]> entry : parameterMap.entrySet()) {
-            String value = Arrays.toString(entry.getValue()).replaceAll("\\[|\\]", "").replaceAll("\\s", ",");
 
-            if (!handler.getParamIndexMapping().containsKey(entry.getKey())) {
-                continue;
-            }
-            int index = handler.getParamIndexMapping().get(entry.getKey());
-            paramValues[index] = convert(parameterTypes[index], value);
-
-        }
-        if (!handler.getParamIndexMapping().containsKey(HttpServletRequest.class.getName())) {
-            int reqIndex = handler.getParamIndexMapping().get(HttpServletRequest.class.getName());
-            paramValues[reqIndex] = req;
-        }
-        if (!handler.getParamIndexMapping().containsKey(HttpServletResponse.class.getName())) {
-            int reqIndex = handler.getParamIndexMapping().get(HttpServletResponse.class.getName());
-            paramValues[reqIndex] = resp;
-        }
-        Object returnValue = handler.getMethod().invoke(handler.getController(), paramValues);
-        if (returnValue == null || returnValue instanceof Void) {
-            return;
-        }
-        resp.getWriter().write(returnValue.toString());
     }
 
     private Object convert(Class<?> type, String value) {
@@ -106,166 +92,151 @@ public class DispatcherServlet extends HttpServlet {
 
     @Override
     public void init(ServletConfig config) {
-        // first loading web.xml
-        doLoadConfig(config.getInitParameter("contextConfigLocation"));
-        // to find application.properties
-        //// todo set as annotation
-        doScanner(env.getProperty("scanPackage"));
 
-        doInstance();
+        context = new ApplicationContext(config.getInitParameter(LOCATION));
 
-        doAutowired();
+        initStrategies(context);
+    }
 
-        initHandleMapping();
+    protected void initStrategies(ApplicationContext context) {
+        // upload
+        initMultipartResolve(context);;
 
-        System.out.println(" Framework is init");
+        // located
+        initLocaleResolve(context);
+
+        initThemeResolve(context);
+
+        initHandlerMappings(context);
+
+        initHandlerAdapter(context);
+
+        initHandlerExceptionResolve(context);
+
+        initRequestToViewNameTranslator(context);
+
+        initViewResolvers(context);
+
+        initFlashMapManage(context);
 
     }
 
-    private void doInstance() {
-        if (classNames.isEmpty()) {
-            return;
-        }
-        try {
-            for (String className : classNames) {
-                Class<?> clazz = Class.forName(className);
+    private void initMultipartResolve(ApplicationContext context) {}
 
-                if (clazz.isAnnotationPresent(Controller.class)) {
-                    // url mapping
-                    // getDeclaredConstructor().newInstance() jdk 9
-                    beanFactory.put(toLowerFirstCase(className), clazz.getDeclaredConstructor().newInstance());
+    private void initFlashMapManage(ApplicationContext context) {}
 
-                }
-                else if (clazz.isAnnotationPresent(Service.class)) {
-                    // enter bean
-                    Service service = clazz.getAnnotation(Service.class);
-                    String beanName = service.value();
-                    if ("".equals(beanName.trim())) {
-                        beanName = toLowerFirstCase(clazz.getName());
-                    }
-                    Object instance = clazz.getDeclaredConstructor().newInstance();
-                    beanFactory.put(beanName, instance);
+    private void initRequestToViewNameTranslator(ApplicationContext context) {}
 
-                    for (Class<?> clazzInterface : clazz.getInterfaces()) {
-                        if (beanFactory.containsKey(clazzInterface.getName())) {
-                            //// todo handle global exception
-                            throw new Exception(("The" + clazzInterface.getName() + " is exists!"));
-                        }
-                        beanFactory.put(clazzInterface.getName(), instance);
-                    }
-                }
+    private void initHandlerExceptionResolve(ApplicationContext context) {}
 
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+    private void initThemeResolve(ApplicationContext context) {}
 
-    private void doAutowired() {
-        if (beanFactory.isEmpty()) {
-            return;
-        }
-        for (Map.Entry<String, Object> entry : beanFactory.entrySet()) {
+    private void initLocaleResolve(ApplicationContext context) {}
 
-            for (Field field : entry.getValue().getClass().getDeclaredFields()) {
-                if (!field.isAnnotationPresent(Autowired.class)) {
-                    continue;
-                }
-                Autowired autowired = field.getAnnotation(Autowired.class);
-                String beanName = autowired.value().trim();
+    private void initHandlerMappings(ApplicationContext context) {
 
-                if ("".equals(beanName)) {
-                    beanName = field.getType().getName();
-                }
-                field.setAccessible(true);
-                try {
-                    field.set(entry.getValue(), beanFactory.get(beanName));
-                } catch (IllegalAccessException e) {
-                    e.printStackTrace();
-                }
-            }
+        String[] beanNames = context.getBeanDefinitionNames();
 
-        }
-    }
+        for (String beanName : beanNames) {
+            Object controller = context.getBean(beanName);
 
-    private void initHandleMapping() {
-        if (beanFactory.isEmpty()) {
-            return;
-        }
-        for (Map.Entry<String, Object> entry : beanFactory.entrySet()) {
-            Class<?> clazz = entry.getValue().getClass();
+            Class<?> clazz = controller.getClass();
+
             if (!clazz.isAnnotationPresent(Controller.class)) {
                 continue;
             }
+
             String baseUrl = "";
 
             if (!clazz.isAnnotationPresent(RequestMapping.class)) {
                 RequestMapping requestMapping = clazz.getAnnotation(RequestMapping.class);
                 baseUrl = requestMapping.value();
             }
-            for (Method method : clazz.getMethods()) {
+
+            Method[] methods = clazz.getMethods();
+
+            for (Method method : methods) {
                 if (!method.isAnnotationPresent(RequestMapping.class)) {
                     continue;
                 }
+
                 RequestMapping requestMapping = method.getAnnotation(RequestMapping.class);
-                String regex = ("/" + baseUrl + "/" + requestMapping.value())
-                        .replaceAll("/+", "/");
+
+                String regex = ("/" + baseUrl + requestMapping.value()
+                        .replaceAll("\\*", ".*")
+                        .replaceAll("/+", "/"));
+
                 Pattern pattern = Pattern.compile(regex);
-                handlerMapping.add(new Handler(entry.getValue(), method, pattern));
-                System.out.println("Current Mapping: " + regex + " , " + method);
+
+                this.handlerMappings.add(new HandlerMapping(controller, method, pattern));
+
+
             }
+
+        }
+
+    }
+
+    private void initHandlerAdapter(ApplicationContext context) {
+        for (HandlerMapping handlerMapping : this.handlerMappings) {
+
+            this.handlerAdapters.put(handlerMapping, new HandlerAdapter());
         }
     }
 
-    private String toLowerFirstCase(String simpleName) {
-        char[] chars = simpleName.toCharArray();
-        chars[0] += 32;
-        return String.valueOf(chars);
+    private void initViewResolvers(ApplicationContext context) {
+        String templateRoot = context.getConfig().getProperty("templateRoot");
+        String path = this.getClass().getClassLoader().getResource(templateRoot).getFile();
+
+        File file = new File(path);
+
+        for (File listFile : file.listFiles()) {
+
+            this.viewResolves.add(new ViewResolve(listFile.getPath()));
+
+        }
+
+
     }
 
-    private void doLoadConfig(String contextConfigLocation) {
-        InputStream inputStream = this.getClass()
-                .getClassLoader()
-                .getResourceAsStream(contextConfigLocation);
-        try {
-            env.load(inputStream);
-        } catch (IOException e) {
-            System.out.println("must init config");
-            e.printStackTrace();
-        } finally {
-            if (null != inputStream) {
-                try {
-                    inputStream.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
+    private void processDispatchResult(HttpServletRequest request, HttpServletResponse response, ModelAndView mv) throws Exception {
+        if (null == mv) {
+            return;
+        }
+
+        if (this.viewResolves.isEmpty()) {
+            return;
+        } else {
+            for (ViewResolve viewResolve : this.viewResolves) {
+
+                View view = viewResolve.resolveViewName(mv.getViewName(), null);
+
+                if (view != null) {
+                    view.render(mv.getModel(), request, response);
+                    return;
                 }
-            }
-        }
-    }
 
-    private void doScanner(String scanPackage) {
-        URL url = this.getClass()
-                .getClassLoader()
-                .getResource(scanPackage.replaceAll("\\.", "/"));
-
-        File classDir = new File(url.getFile());
-
-        for (File file : classDir.listFiles()) {
-            if (file.isDirectory()) {
-                doScanner(scanPackage + "." + file.getName());
-            } else {
-                if (!file.getName().endsWith(".class")) {
-                    continue;
-                }
-                String clazzName = (scanPackage + "." + file.getName().replace(".class", ""));
-                classNames.add(clazzName);
             }
         }
 
     }
 
-    private Handler getHandler(HttpServletRequest request) {
-        if (!handlerMapping.isEmpty()) {
+    private HandlerAdapter getHandlerAdapter(HandlerMapping handler) {
+        if (this.handlerAdapters.isEmpty()) {
+            return null;
+        }
+
+        HandlerAdapter handlerAdapter = this.handlerAdapters.get(handler);
+
+        if (handlerAdapter.supports(handler)) {
+            return handlerAdapter;
+        }
+        return null;
+
+    }
+
+    private HandlerMapping getHandler(HttpServletRequest request) {
+        if (!handlerMappings.isEmpty()) {
             return null;
         }
         String url = request.getRequestURI();
@@ -273,7 +244,7 @@ public class DispatcherServlet extends HttpServlet {
         String contextPath = request.getContextPath();
 
         url = url.replace(contextPath, "").replaceAll("/+", ",");
-        for (Handler handler : handlerMapping) {
+        for (HandlerMapping handler : handlerMappings) {
             Matcher matcher = handler.getPattern().matcher(url);
             if (!matcher.matches()) {
                 continue;
