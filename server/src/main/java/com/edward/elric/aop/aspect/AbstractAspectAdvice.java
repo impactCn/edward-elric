@@ -20,8 +20,6 @@ public abstract class AbstractAspectAdvice {
     protected Object invoke(JoinPoint joinPoint, Object returnVal, Throwable ex) throws Throwable {
         Class<?>[] paramTypes = this.method.getParameterTypes();
 
-
-
         if (paramTypes.length == 0 || null == paramTypes) {
             return this.method.invoke(target);
         } else {
