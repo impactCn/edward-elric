@@ -1,5 +1,7 @@
 package com.edward.elric.aop.aspect;
 
+import com.edward.elric.aop.intercept.MethodInvocation;
+
 import java.lang.reflect.Method;
 
 /**
@@ -16,6 +18,12 @@ public class MethodBeforeAdvice extends AbstractAspectAdvice implements Advice{
 
     public void before(Method method, Object[] args, Object target) throws Throwable {
         invoke(this.joinPoint, null, null);
+    }
+
+    public Object invoke(MethodInvocation methodInvocation) throws Throwable {
+        this.joinPoint = methodInvocation;
+        this.before(methodInvocation.getMethod(), methodInvocation.getArgs(), methodInvocation.getThis());
+        return methodInvocation.proceed();
     }
 
 }

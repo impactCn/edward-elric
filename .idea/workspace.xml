@@ -5,9 +5,19 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a11c1273-bcea-443d-997b-b64946174aca" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/server/src/main/java/com/edward/elric/aop/aspect/MethodBeforeAdvice.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/src/main/java/com/edward/elric/aop/aspect/AfterReturningAdvice.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/src/main/java/com/edward/elric/aop/aspect/AfterThrowingAdvice.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/edward/elric/aop/aspect/AbstractAspectAdvice.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/edward/elric/aop/aspect/AbstractAspectAdvice.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/edward/elric/aop/JdkDynamicAopProxy.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/edward/elric/aop/JdkDynamicAopProxy.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/edward/elric/aop/aspect/JoinPoint.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/edward/elric/aop/aspect/JoinPoint.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/edward/elric/aop/aspect/MethodBeforeAdvice.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/edward/elric/aop/aspect/MethodBeforeAdvice.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/edward/elric/aop/intercept/MethodInterceptor.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/edward/elric/aop/intercept/MethodInterceptor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/edward/elric/aop/intercept/MethodInvocation.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/edward/elric/aop/intercept/MethodInvocation.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/edward/elric/aop/support/AdviseSupport.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/edward/elric/aop/support/AdviseSupport.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/target/classes/com/edward/elric/mvc/DispatcherServlet.class" beforeDir="false" afterPath="$PROJECT_DIR$/server/target/classes/com/edward/elric/mvc/DispatcherServlet.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/target/classes/com/edward/elric/mvc/View.class" beforeDir="false" afterPath="$PROJECT_DIR$/server/target/classes/com/edward/elric/mvc/View.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/target/classes/com/edward/elric/mvc/ViewResolve.class" beforeDir="false" afterPath="$PROJECT_DIR$/server/target/classes/com/edward/elric/mvc/ViewResolve.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/target/classes/com/edward/elric/mvc/handler/HandlerAdapter.class" beforeDir="false" afterPath="$PROJECT_DIR$/server/target/classes/com/edward/elric/mvc/handler/HandlerAdapter.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -61,9 +71,23 @@
     <property name="project.structure.side.proportion" value="0.0" />
     <property name="settings.editor.selected.configurable" value="fileTemplates" />
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Application.JdkDynamicAopProxy">
     <configuration default="true" type="Applet">
       <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="JdkDynamicAopProxy" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.edward.elric.aop.JdkDynamicAopProxy" />
+      <module name="edward-elric-server" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.edward.elric.aop.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -84,6 +108,17 @@
     </configuration>
     <configuration default="true" type="Application" factoryName="Application">
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="ArquillianJUnit" factoryName="" nameIsGenerated="true">
+      <option name="arquillianRunConfiguration">
+        <value>
+          <option name="containerStateName" value="" />
+        </value>
+      </option>
+      <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -115,6 +150,7 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.JdkDynamicAopProxy" />
         <item itemvalue="Application.View" />
       </list>
     </recent_temporary>
@@ -134,7 +170,12 @@
       <workItem from="1610285625288" duration="7678000" />
       <workItem from="1610809156938" duration="5842000" />
       <workItem from="1610815033333" duration="10331000" />
-      <workItem from="1610986724598" duration="717000" />
+      <workItem from="1610986724598" duration="2493000" />
+      <workItem from="1611069558788" duration="718000" />
+      <workItem from="1611389851369" duration="13283000" />
+      <workItem from="1611675745469" duration="683000" />
+      <workItem from="1611680733689" duration="95000" />
+      <workItem from="1612098285134" duration="6318000" />
     </task>
     <servers />
   </component>

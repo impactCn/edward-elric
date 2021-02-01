@@ -14,9 +14,9 @@ public interface JoinPoint {
 
     Object getThis();
 
-    void setAttribute();
+    void setAttribute(String key, String value);
 
-    void getAttribute();
+    Object getAttribute(String key);
 
 
 }

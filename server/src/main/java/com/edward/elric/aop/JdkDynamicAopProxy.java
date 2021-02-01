@@ -6,6 +6,7 @@ import com.edward.elric.aop.support.AdviseSupport;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -44,6 +45,9 @@ public class JdkDynamicAopProxy implements AopProxy, InvocationHandler {
                 args,
                 methodMatchers);
 
-        return invocation.p;
+        return invocation.proceed();
     }
+
+
+
 }

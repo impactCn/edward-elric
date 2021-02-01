@@ -104,7 +104,7 @@ public class AdviseSupport<T> {
                     LinkedList<Object> advices = new LinkedList<>();
 
                     if (!(null == config.getAspectBefore() || "".equals(config.getAspectBefore().trim()))) {
-                        advices.add(new Method)
+//                        advices.add(new Method)
                     }
 
                 }

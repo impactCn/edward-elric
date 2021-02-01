@@ -3,6 +3,7 @@ package com.edward.elric.aop.intercept;
 import com.edward.elric.aop.aspect.JoinPoint;
 
 import java.lang.reflect.Method;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -26,6 +27,8 @@ public class MethodInvocation implements JoinPoint {
 
     private Map<String, Object> attributes;
 
+    private int currentInterceptorIndex = -1;
+
 
     public MethodInvocation(Object proxy,
                             Method method,
@@ -41,28 +44,55 @@ public class MethodInvocation implements JoinPoint {
         this.methodMatchers = methodMatchers;
     }
 
+    public Object proceed() throws Throwable {
+        if (this.currentInterceptorIndex == this.methodMatchers.size() - 1) {
+            return this.method.invoke(this.target, this.getArgs());
+        }
+
+        Object advice = this.methodMatchers.get(++this.currentInterceptorIndex);
+
+        if (advice instanceof MethodInterceptor) {
+            MethodInterceptor methodInterceptor = (MethodInterceptor) advice;
+            return methodInterceptor.invoke(this);
+        } else {
+            return proceed();
+        }
+
+    }
+
     @Override
     public Method getMethod() {
-        return null;
+        return this.method;
     }
 
     @Override
     public Object[] getArgs() {
-        return new Object[0];
+        return this.args;
     }
 
     @Override
     public Object getThis() {
-        return null;
+        return this.target;
     }
 
     @Override
-    public void setAttribute() {
+    public void setAttribute(String key, String value) {
+        if (value != null) {
+            if (this.attributes == null) {
+                this.attributes = new HashMap<>();
+            }
+            this.attributes.put(key, value);
+        }
+        else {
+            if (this.attributes != null) {
+                this.attributes.remove(value);
+            }
+        }
 
     }
 
     @Override
-    public void getAttribute() {
-
+    public Object getAttribute(String key) {
+        return this.attributes != null ? this.attributes.get(key) : null;
     }
 }

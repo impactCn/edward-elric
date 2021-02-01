@@ -6,4 +6,5 @@ package com.edward.elric.aop.intercept;
  */
 public interface MethodInterceptor {
 
+    Object invoke(MethodInvocation methodInvocation) throws Throwable;
 }
