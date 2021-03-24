@@ -5,19 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a11c1273-bcea-443d-997b-b64946174aca" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/server/src/main/java/com/edward/elric/aop/aspect/AfterReturningAdvice.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/src/main/java/com/edward/elric/aop/aspect/AfterThrowingAdvice.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/src/main/java/com/edward/elric/server/time/MultiplexerTimeServer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/edward/elric/aop/JdkDynamicAopProxy.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/edward/elric/aop/JdkDynamicAopProxy.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/edward/elric/aop/aspect/JoinPoint.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/edward/elric/aop/aspect/JoinPoint.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/edward/elric/aop/aspect/MethodBeforeAdvice.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/edward/elric/aop/aspect/MethodBeforeAdvice.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/edward/elric/aop/intercept/MethodInterceptor.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/edward/elric/aop/intercept/MethodInterceptor.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/edward/elric/aop/intercept/MethodInvocation.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/edward/elric/aop/intercept/MethodInvocation.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/edward/elric/aop/support/AdviseSupport.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/edward/elric/aop/support/AdviseSupport.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/target/classes/com/edward/elric/mvc/DispatcherServlet.class" beforeDir="false" afterPath="$PROJECT_DIR$/server/target/classes/com/edward/elric/mvc/DispatcherServlet.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/target/classes/com/edward/elric/mvc/View.class" beforeDir="false" afterPath="$PROJECT_DIR$/server/target/classes/com/edward/elric/mvc/View.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/target/classes/com/edward/elric/mvc/ViewResolve.class" beforeDir="false" afterPath="$PROJECT_DIR$/server/target/classes/com/edward/elric/mvc/ViewResolve.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/target/classes/com/edward/elric/mvc/handler/HandlerAdapter.class" beforeDir="false" afterPath="$PROJECT_DIR$/server/target/classes/com/edward/elric/mvc/handler/HandlerAdapter.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -60,6 +50,7 @@
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
+    <property name="dart.analysis.tool.window.visible" value="false" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
     <property name="node.js.path.for.package.tslint" value="project" />
@@ -70,6 +61,7 @@
     <property name="project.structure.proportion" value="0.0" />
     <property name="project.structure.side.proportion" value="0.0" />
     <property name="settings.editor.selected.configurable" value="fileTemplates" />
+    <property name="show.migrate.to.gradle.popup" value="false" />
   </component>
   <component name="RunManager" selected="Application.JdkDynamicAopProxy">
     <configuration default="true" type="Applet">
@@ -108,17 +100,6 @@
     </configuration>
     <configuration default="true" type="Application" factoryName="Application">
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration default="true" type="ArquillianJUnit" factoryName="" nameIsGenerated="true">
-      <option name="arquillianRunConfiguration">
-        <value>
-          <option name="containerStateName" value="" />
-        </value>
-      </option>
-      <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -175,7 +156,8 @@
       <workItem from="1611389851369" duration="13283000" />
       <workItem from="1611675745469" duration="683000" />
       <workItem from="1611680733689" duration="95000" />
-      <workItem from="1612098285134" duration="6318000" />
+      <workItem from="1612098285134" duration="6833000" />
+      <workItem from="1616599412901" duration="1991000" />
     </task>
     <servers />
   </component>
